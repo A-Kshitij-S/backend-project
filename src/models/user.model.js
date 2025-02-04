@@ -45,21 +45,21 @@ const userSchema= new Schema(
         refreshToken: {
             type: String
         }
-
     },
     {
         timestamps: true
     }
 )
 
-userSchema.pre("save", async function (next) { //here functon is used instead of callback as callback does not have reference of this, it does not contain context
+//pre is used for running this function just before saving in database
+userSchema.pre("save", async function (next) { //here functon is used instead of callback as callback does not have reference of 'this', it does not contain context
     if(!this.isModified("password")) return next()
 
     this.password= bcrypt.hash(this.password, 10)
     next()
 })
 
-userSchema.method.isPasswordCorrect= async function (password) {
+userSchema.method.isPasswordCorrect= async function (password) {//custom function to check if password is correct
     return await bcrypt.compare(password, this.password)
 }
 
@@ -81,7 +81,6 @@ userSchema.methods.generateRefreshToken = function(){
     return jwt.sign(
         {
             _id: this._id,
-            
         },
         process.env.REFRESH_TOKEN_SECRET,
         {
