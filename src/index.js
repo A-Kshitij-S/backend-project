@@ -4,10 +4,12 @@ require('dotenv').config({ path: "./.env" });
 import { app } from "./app.js";
 import connectDB from './db/index.js';
 
+const port= process.env.PORT || 6969;
+
 connectDB()
 .then(()=>{
-    app.listen(process.env.PORT || 6969, ()=>{
-        console.log("server is running in port: ", process.env.PORT);
+    app.listen(port, ()=>{
+        console.log("server is running in port: ", port);
         
     })
 })
