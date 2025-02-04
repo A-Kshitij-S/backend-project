@@ -1,10 +1,8 @@
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 require('dotenv').config({ path: "./.env" }); 
-
+import { app } from "./app.js";
 import connectDB from './db/index.js';
-import express from "express";
-
 
 connectDB()
 .then(()=>{
