@@ -1,5 +1,7 @@
 import mongoose, {Schema} from "mongoose";
-import {bcrypt} from "bcrypt"
+// import {bcrypt} from "bcrypt"
+import pkg from 'bcrypt';
+const {bcrypt} = pkg;
 import jwt from "jsonwebtoken";
 
 const userSchema= new Schema(
@@ -55,7 +57,7 @@ const userSchema= new Schema(
 userSchema.pre("save", async function (next) { //here functon is used instead of callback as callback does not have reference of 'this', it does not contain context
     if(!this.isModified("password")) return next()
 
-    this.password= bcrypt.hash(this.password, 10)
+    this.password= await bcrypt.hash(this.password, 10)
     next()
 })
 
