@@ -211,20 +211,20 @@ const changeCurrentPassword= asyncHandler (async (req, res)=>{
 
     return res
     .status(200)
-    .json(200, {}, "password changed successfully")
+    .json(new ApiResponse(200, {}, "password changed successfully"))
 })
 
 const getCurrentUser= asyncHandler(async(req, res)=>{
     return res
     .status(200)
-    .json(200, req.user, "user fetched successfully ")
+    .json(new ApiResponse(200, req.user, "user fetched successfully "))
 })
 
 const updateAccountDetail= asyncHandler(async(req, res)=>{
     const {fullName, email}= req.body
 
     if(!(fullName || email)){
-        throw new apiError(400, "all fields are required")
+        throw new ApiError(400, "all fields are required")
     }
     const user= await User.findOneAndUpdate(
         req.body?._id,
@@ -239,7 +239,7 @@ const updateAccountDetail= asyncHandler(async(req, res)=>{
 
     return res
     .status(200)
-    .json(new apiResponse(200, user, "user details updated successfully"))
+    .json(new ApiResponse(200, user, "user details updated successfully"))
 
 })
 
@@ -247,13 +247,13 @@ const updateUserAvatar= asyncHandler(async(req, res)=>{
     const avatarLocalPath= req.file?.path
 
     if(!avatarLocalPath){
-        throw new apiError(400, "avatar file missing")
+        throw new ApiError(400, "avatar file missing")
     }
 
     const avatar= await uploadOnCloudinary(avatarLocalPath)
     
     if(!avatar.url){
-        throw new apiError(400, "error while uploading avatar")
+        throw new ApiError(400, "error while uploading avatar")
     }
     const user= await User.findOneAndUpdate(
         req.body?._id,
@@ -268,7 +268,7 @@ const updateUserAvatar= asyncHandler(async(req, res)=>{
     return res
     .status(200)
     .json(
-        new apiResponse(200, user, "user avatar updated successfully")
+        new ApiResponse(200, user, "user avatar updated successfully")
     )
 })
 
@@ -276,13 +276,13 @@ const updateUserCoverImage= asyncHandler(async(req, res)=>{
     const coverImageLocalPath= req.file?.path
 
     if(!coverImageLocalPath){
-        throw new apiError(400, "avatar file missing")
+        throw new ApiError(400, "avatar file missing")
     }
 
     const coverImage= await uploadOnCloudinary(coverImageLocalPath)
     
     if(!coverImage.url){
-        throw new apiError(400, "error while uploading avatar")
+        throw new ApiError(400, "error while uploading avatar")
     }
     const user= await User.findOneAndUpdate(
         req.body?._id,
@@ -297,7 +297,7 @@ const updateUserCoverImage= asyncHandler(async(req, res)=>{
     return res
     .status(200)
     .json(
-        new apiResponse(200, user, "user cover image updated successfully")
+        new ApiResponse(200, user, "user cover image updated successfully")
     )
 })
 
